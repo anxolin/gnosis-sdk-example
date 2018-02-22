@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,400italic");
+
+html {
+  /*
+  Change from 16px to 10px, because for calculations it's easier
+  to use 10px in the formula:
+        target / context = result
+    e.g. I want sth to be 12px:
+         so 12/10 = 1.2rem
+    MORE INFO: https://snook.ca/archives/html_and_css/font-size-with-rem
+  */
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem; /* 16px */
+  font-family: "Source Sans Pro", 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+main h1 {
+  font-size: 2rem;
+}

@@ -1,0 +1,14 @@
+{
+  "name": "gnosis-sdk-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/dev-server.js"
+  },
+  "author": "Angel Rodriguez <anxolin@gmail.com> (https://github.com/anxolin)",
+  "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^2.23.6"
+  }
+}

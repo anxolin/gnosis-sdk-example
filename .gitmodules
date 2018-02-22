@@ -1,0 +1,3 @@
+[submodule "gnosis-contracts"]
+	path = gnosis-contracts
+	url = git@github.com:gnosis/gnosis-contracts.git
