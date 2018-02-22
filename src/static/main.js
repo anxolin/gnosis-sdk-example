@@ -8,7 +8,8 @@ Gnosis.create().then(async gnosis => {
   await mathExample(gnosis)
   const ipfsHash = await publishEventExample(gnosis)
   const oracle = await createOracleExample(ipfsHash, gnosis)
-  await createCategoricalEventExample(oracle, gnosis)
+  const categoricalEvent = await createCategoricalEventExample(oracle, gnosis)
+  await buyAllOutcomes(categoricalEvent, gnosis)
 })
 
 
@@ -115,3 +116,36 @@ async function createCategoricalEventExample(oracle, gnosis) {
 }
 
 
+async function buyAllOutcomes (event, gnosis) {
+  console.log('buyAllOutcomes: Init')
+  const logItems = []
+  const depositValue = 4e18
+  const txResults = await Promise.all([
+      gnosis.etherToken.deposit({ value: depositValue }),
+      gnosis.etherToken.approve(event.address, depositValue),
+      event.buyAllOutcomes(depositValue),
+  ])
+  logItems.push(`Deposited <span class="code">${depositValue}</code> EtherToken`)
+  logItems.push(`Approve the event contract <span class="code">${event.address} 
+  </code> to use <span class="code">${depositValue}</code> EtherToken`)
+  logItems.push(`Buy all outcomes for the event contract 
+<span class="code">${event.address}</code>`)
+
+  // Make sure everything worked
+  const expectedEvents = [
+      'Deposit',
+      'Approval',
+      'OutcomeTokenSetIssuance',
+  ]
+  txResults.forEach((txResult, i) => {
+    const event = expectedEvents[i]
+    console.log(`Check transaction for log ${event}`, txResult)
+    Gnosis.requireEventFromTXResult(txResult, expectedEvents[i])
+    logItems.push(`The transaction ${txResult} has indeed the event ${event}`)
+  })
+
+  log('Buy all outcomes', `Example on using <em>buyAllOutcomes</em>.`, logItems)
+  console.log('buyAllOutcomes: All outcomes has been bought', txResults)
+
+  return txResults
+}
