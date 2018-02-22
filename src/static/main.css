@@ -38,3 +38,9 @@ section.banner {
   max-width: 100rem;
   margin: 0 auto;
 }
+
+#output {
+  padding: 2rem 3rem;
+  background-color: #2c3e50;
+  color: aliceblue;
+}
