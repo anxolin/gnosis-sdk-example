@@ -25,8 +25,11 @@ header h1 {
   text-align: center;
 }
 
+main {
+  padding: 0 1.5rem;
+}
 main h1 {  
-  font-size: 2rem;
+  font-size: 2rem;  
 }
 
 section.banner {
@@ -34,7 +37,7 @@ section.banner {
 }
 
 .content {
-  padding: 2.5rem 1.5rem 2.5rem 1.5rem;
+  padding: 1.5rem;
   max-width: 100rem;
   margin: 0 auto;
 }
@@ -43,4 +46,13 @@ section.banner {
   padding: 2rem 3rem;
   background-color: #2c3e50;
   color: aliceblue;
+  word-wrap: break-word;
+}
+
+#output a{
+  color: white;
+}
+
+#output .code {
+  color: yellow
 }
