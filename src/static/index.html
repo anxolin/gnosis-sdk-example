@@ -41,6 +41,24 @@
         </ul>
     </section>
     <section class="content">
+        <h1>State</h1>
+        <div id="state" />
+    </section>
+    <section class="content">
+        <h1>Actions</h1>
+        <div>
+            <button id="mathExampleBtn" onclick="App.mathExample()" disabled="disable">Use math contract</button>
+            <button id="publishEventExampleBtn" onclick="App.publishEventExample()" disabled="disable">Publish Event</button>
+            <button id="createOracleExampleBtn" onclick="App.createOracleExample()" disabled="disable">Create oracle</button>
+            <button id="createCategoricalEventExampleBtn" onclick="App.createCategoricalEventExample()" disabled="disable">Create categorical event</button>            
+            <button id="buyAllOutcomesBtn" onclick="App.buyAllOutcomes()" disabled="disable">Buy all outcomes</button>
+            <button id="clearState" onclick="App.clearState()" disabled="disable">Clear state</button>
+        </div>
+        <div>
+          
+        </div>
+    </section>
+    <section class="content">
       <h1>Output:</h1>
       <div id="output"></div>
     </section>
@@ -50,6 +68,6 @@
   <footer>
   </footer>
   <script src="vendor/gnosis.js"></script>
-  <script src="main.js"></script>
+  <script src="main.js?v0"></script>
 </body>
 </html>
