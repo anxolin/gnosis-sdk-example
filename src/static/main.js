@@ -73,6 +73,10 @@
 
       async redeemExample () {
         await _redeemExample(state.categoricalEvent)
+      },
+
+      async getEtherTokenBalance () {
+        await _getEtherTokenBalance(gnosis)
       }
     }
   })
@@ -100,7 +104,8 @@
     document.getElementById('resolveMarketExampleBtn').disabled = (state.categoricalEvent === null)    
     document.getElementById('redeemExampleBtn').disabled = (state.winninOutcome === null)    
     
-    document.getElementById('clearState').disabled = false    
+    document.getElementById('clearStateBtn').disabled = false
+    document.getElementById('getEtherTokenBalanceBtn').disabled = false    
   }
 
   function clearState () {
@@ -259,20 +264,19 @@ in: <br />
     console.log('createCategoricalEventExample: created', event.address)
     return event
   }
-  
-  
+
   async function _buyAllOutcomesExample (event, gnosis) {
     console.log('buyAllOutcomesExample: Init')
     const logItems = []
-    const depositValue = 0.01e18
+    const depositValue = 1e18
     const txResults = await Promise.all([
         gnosis.etherToken.deposit({ value: depositValue }),
         gnosis.etherToken.approve(event.address, depositValue),
         event.buyAllOutcomes(depositValue),
     ])
-    logItems.push(`Deposited <span class="code">${depositValue}</span> EtherToken`)
+    logItems.push(`Deposited <span class="code">${_fromWei(depositValue)}</span> EtherToken`)
     logItems.push(`Approve the event contract <span class="code">${event.address} 
-    </span> to use <span class="code">${depositValue}</span> EtherToken`)
+    </span> to use <span class="code">${_fromWei(depositValue)}</span> EtherToken`)
     logItems.push(`Buy all outcomes for the event contract 
   <span class="code">${event.address}</span>`)
   
@@ -317,6 +321,7 @@ the transaction <span class="code">${txResult.tx}</span>.`)
       
       const balance = await outcomeToken
         .balanceOf(account)
+        .then(_fromWei)
         .catch(_handleError)
 
       logItems.push(`[<strong>Output token ${i + 1}</strong>] <span class="code">
@@ -366,6 +371,29 @@ ${balance}</span> tokens of <span class="code">${outcomeToken.address}</span>`)
       ]
     })
     console.log('redeemExample: Done')
+  }
+
+  async function _getEtherTokenBalance (gnosis) {
+    console.log('getEtherTokenBalance: Init')
+    const account = gnosis.defaultAccount
+    const balance = await gnosis.etherToken
+      .balanceOf(account)
+      .then(_fromWei)
+      .catch(_handleError)
+
+    log({
+      title: 'Balance of EtherToken',
+      message: `The account <span class="code">${account}</span> has:`,
+      items: [
+        `${balance} of EtherToken`
+      ]
+    })
+
+    console.log('getEtherTokenBalance: The balance is %s', balance)
+  }
+
+  function _fromWei (bigNumber) {
+    return bigNumber.div(1e18).valueOf()
   }
 
 

@@ -58,8 +58,12 @@ section.banner {
 }
 
 
-.buttons {
+.buttons, .action-buttons {
   text-align: right
+}
+.action-buttons {
+  margin-top: 3rem;
+  border-top: solid 2px rgba(244, 244, 244, 1);
 }
 
 
