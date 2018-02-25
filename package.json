@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/dev-server.js"
+    "start": "node src/dev-server.js",
+    "build": "mkdir -p dist; rm -rf dist/*; cp -r src/static/* dist"
   },
   "author": "Angel Rodriguez <anxolin@gmail.com> (https://github.com/anxolin)",
   "license": "ISC",

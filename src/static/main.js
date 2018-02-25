@@ -66,9 +66,9 @@
     log({
       title: 'Upps! there was one error there',
       message: error.message,
-      items: [
-        'Check that the gas limit is set it properly',
-        'Read the console for more info'
+      items: [        
+        'Read the console for more info',
+        'Maybe check that the gas limit is set it properly - common issuse there ;)'
       ]
     })
 
