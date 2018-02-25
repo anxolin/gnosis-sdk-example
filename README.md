@@ -4,7 +4,7 @@ Just a simple example on using the Gnosis Prediction Market SDK.
 ## Demo
 Check out the demo in:
 
-* [https://wizardly-pasteur-5717ab.netlify.com/]()
+* [https://wizardly-pasteur-5717ab.netlify.com/](https://wizardly-pasteur-5717ab.netlify.com)
 
 ## Run it locally
 
