@@ -268,7 +268,7 @@ in: <br />
   async function _buyAllOutcomesExample (event, gnosis) {
     console.log('buyAllOutcomesExample: Init')
     const logItems = []
-    const depositValue = 1e18
+    const depositValue = 0.1e18
     const txResults = await Promise.all([
         gnosis.etherToken.deposit({ value: depositValue }),
         gnosis.etherToken.approve(event.address, depositValue),
