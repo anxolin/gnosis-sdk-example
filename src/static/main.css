@@ -95,7 +95,10 @@ a.btn {
   background-color: white;
 }
 
-.btn:disabled, .btn:disabled:hover {
+.btn:disabled, .btn:disabled:hover,
+.btn.primary:disabled, .btn.primary:disabled:hover,
+.btn.secondary:disabled, .btn.secondary:disabled:hover,
+.btn.success:disabled, .btn.success:disabled:hover {
   color: darkgrey;
   background-color: #e7e7e7;
   cursor: initial;

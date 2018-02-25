@@ -105,6 +105,7 @@
     document.getElementById('redeemExampleBtn').disabled = (state.winninOutcome === null)    
     
     document.getElementById('clearStateBtn').disabled = false
+    document.getElementById('showStateBtn').disabled = false    
     document.getElementById('getEtherTokenBalanceBtn').disabled = false    
   }
 
