@@ -8,7 +8,8 @@
     ipfsHash: localStorage.getItem('ipfsHash') || null,
     oracle: null,
     oracleAddress: null,
-    categoricalEvent: null
+    categoricalEvent: null,
+    winninOutcome: null
   }
 
   _printState()  
@@ -66,7 +67,12 @@
       },
 
       async resolveMarketExample () {
-        await _resolveMarketExample(state.categoricalEvent, gnosis)
+        const winninOutcome = await _resolveMarketExample(state.categoricalEvent, gnosis)
+        _updateState('winninOutcome', winninOutcome)
+      },
+
+      async redeemExample () {
+        await _redeemExample(state.categoricalEvent)
       }
     }
   })
@@ -92,6 +98,8 @@
     document.getElementById('buyAllOutcomesExampleBtn').disabled = (state.categoricalEvent === null)
     document.getElementById('checkBalancesExampleBtn').disabled = (state.categoricalEvent === null)    
     document.getElementById('resolveMarketExampleBtn').disabled = (state.categoricalEvent === null)    
+    document.getElementById('redeemExampleBtn').disabled = (state.winninOutcome === null)    
+    
     document.getElementById('clearState').disabled = false    
   }
 
@@ -325,9 +333,10 @@ ${balance}</span> tokens of <span class="code">${outcomeToken.address}</span>`)
 
   async function _resolveMarketExample(event, gnosis) {
     console.log('resolveMarketExample: Init')
+    const outcome = 1    
     await gnosis.resolveEvent({
       event,
-      outcome: 1
+      outcome
     }).catch(_handleError)
 
     log({
@@ -337,8 +346,26 @@ ${balance}</span> tokens of <span class="code">${outcomeToken.address}</span>`)
         'We resolve the market setting <span class="code">Trump</span> as the new president.'
       ]
     })
-
+    return outcome
     console.log('resolveMarketExample: Done!')
+  }
+
+  async function _redeemExample(event) {
+    console.log('redeemExample: Init')
+    const reemResult = await event
+      .redeemWinnings()
+      .catch(_handleError)
+
+    Gnosis.requireEventFromTXResult(reemResult, 'WinningsRedemption')
+
+    log({
+      title: 'Reedeem winnings',
+      message: 'Reedeem the winning tokens:',
+      items: [
+        "Nice! You've redeemed the winning tokens"
+      ]
+    })
+    console.log('redeemExample: Done')
   }
 
 
