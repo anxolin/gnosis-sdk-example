@@ -1,6 +1,13 @@
 # Gnosis SDK Example
 Just a simple example on using the Gnosis Prediction Market SDK.
 
+## Demo
+Check out the demo in:
+
+* [https://wizardly-pasteur-5717ab.netlify.com/]()
+
+## Run it locally
+
 Install Ganache:
 ```bash
 npm install -g ganache-cli
@@ -20,7 +27,6 @@ npm run migrate
 cd ..
 npm install
 ```
-
 
 Run the dev server:
 ```js
