@@ -59,6 +59,10 @@
       async buyAllOutcomes () {
         await _buyAllOutcomes(state.categoricalEvent, gnosis)
           .catch(_handleError)
+      },
+
+      async checkBalances () {
+        await _checkBalances(state.categoricalEvent, gnosis)
       }
     }
   })
@@ -82,6 +86,7 @@
     document.getElementById('createOracleExampleBtn').disabled = (state.ipfsHash === null)
     document.getElementById('createCategoricalEventExampleBtn').disabled = (state.oracle === null)
     document.getElementById('buyAllOutcomesBtn').disabled = (state.categoricalEvent === null)
+    document.getElementById('checkBalancesBtn').disabled = (state.categoricalEvent === null)    
     document.getElementById('clearState').disabled = false    
   }
 
@@ -91,6 +96,7 @@
       localStorage.removeItem(prop)
     })
     _printState()
+    _enableDisableButtons()
   }
 
   function showState () {
@@ -251,11 +257,11 @@ in: <br />
         gnosis.etherToken.approve(event.address, depositValue),
         event.buyAllOutcomes(depositValue),
     ])
-    logItems.push(`Deposited <span class="code">${depositValue}</code> EtherToken`)
+    logItems.push(`Deposited <span class="code">${depositValue}</span> EtherToken`)
     logItems.push(`Approve the event contract <span class="code">${event.address} 
-    </code> to use <span class="code">${depositValue}</code> EtherToken`)
+    </span> to use <span class="code">${depositValue}</span> EtherToken`)
     logItems.push(`Buy all outcomes for the event contract 
-  <span class="code">${event.address}</code>`)
+  <span class="code">${event.address}</span>`)
   
     // Make sure everything worked
     const expectedEvents = [
@@ -267,7 +273,8 @@ in: <br />
       const event = expectedEvents[i]
       console.log(`Check transaction for log ${event}`, txResult)
       Gnosis.requireEventFromTXResult(txResult, expectedEvents[i])
-      logItems.push(`The transaction ${txResult.tx} has indeed the event ${event}`)
+      logItems.push(`The event <span class="code">${event}</span> is indeed in
+the transaction <span class="code">${txResult.tx}</span>.`)
     })
 
     log({
@@ -279,4 +286,35 @@ in: <br />
   
     return txResults
   } 
+
+  async function _checkBalances(event, gnosis) {
+    console.log('checkBalances: Init')
+    const account = gnosis.defaultAccount 
+    const { Token } = gnosis.contracts
+    const outcomeCount = await event
+      .getOutcomeCount()
+      .then(count => parseInt(count.valueOf()))
+      .catch(_handleError)
+
+    const logItems = []
+    for(let i = 0; i < outcomeCount; i++) {
+      const outcomeToken = await event.outcomeTokens(i)
+        .then(tokenAddress => Token.at(tokenAddress))
+        .catch(_handleError)
+      
+      const balance = await outcomeToken
+        .balanceOf(account)
+        .catch(_handleError)
+
+      logItems.push(`[<strong>Output token ${i + 1}</strong>] <span class="code">
+${balance}</span> tokens of <span class="code">${outcomeToken.address}</span>`)
+    }
+
+    log({
+      title: 'Check balances',
+      message: `The balances for account <span class="code">${account}</span> are:`,
+      items: logItems
+    })
+    console.log('checkBalances: Done!')
+  }
 }())

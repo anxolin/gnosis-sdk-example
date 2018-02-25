@@ -84,10 +84,18 @@ a.btn {
   display: inline-block;
 }
 
+
 .btn:hover, .btn:focus {
   color: black;
   text-shadow: 0 0 20px white;
   background-color: white;
+}
+
+.btn:disabled, .btn:disabled:hover {
+  color: darkgrey;
+  background-color: #e7e7e7;
+  cursor: initial;
+  text-shadow: initial;
 }
 
 /* btn style */
