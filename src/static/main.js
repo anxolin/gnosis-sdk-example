@@ -30,29 +30,50 @@
 
       mathExample () {
         _mathExample(gnosis)
+          .catch(_handleError)
       },
 
       async publishEventExample () {
         const ipfsHash = await _publishEventExample(gnosis)
+        .catch(_handleError)
+
         _updateState('ipfsHash', ipfsHash)
       },
 
       async createOracleExample () {
         const oracle = await createOracleExample(state.ipfsHash, gnosis)
+          .catch(_handleError)
+
         _updateState('oracle', oracle)
         _updateState('oracleAddress', oracle.address)
       },
 
       async createCategoricalEventExample () {
         const categoricalEvent = await _createCategoricalEventExample(state.oracle, gnosis)
+          .catch(_handleError)
+
         _updateState('categoricalEvent', categoricalEvent)
       },
 
       async buyAllOutcomes () {
         await _buyAllOutcomes(state.categoricalEvent, gnosis)
+          .catch(_handleError)
       }
     }
   })
+
+  function _handleError (error) {
+    log({
+      title: 'Upps! there was one error there',
+      message: error.message,
+      items: [
+        'Check that the gas limit is set it properly',
+        'Read the console for more info'
+      ]
+    })
+
+    throw error
+  }
 
   function _enableDisableButtons () {
     document.getElementById('mathExampleBtn').disabled = false
@@ -219,7 +240,7 @@ in: <br />
   async function _buyAllOutcomes (event, gnosis) {
     console.log('buyAllOutcomes: Init')
     const logItems = []
-    const depositValue = 4e18
+    const depositValue = 0.01e18
     const txResults = await Promise.all([
         gnosis.etherToken.deposit({ value: depositValue }),
         gnosis.etherToken.approve(event.address, depositValue),
@@ -241,9 +262,9 @@ in: <br />
       const event = expectedEvents[i]
       console.log(`Check transaction for log ${event}`, txResult)
       Gnosis.requireEventFromTXResult(txResult, expectedEvents[i])
-      logItems.push(`The transaction ${txResult} has indeed the event ${event}`)
+      logItems.push(`The transaction ${txResult.tx} has indeed the event ${event}`)
     })
-  
+
     log({
       title: 'Buy all outcomes',
       message: `Example on using <em>buyAllOutcomes</em>.`,
