@@ -56,13 +56,17 @@
         _updateState('categoricalEvent', categoricalEvent)
       },
 
-      async buyAllOutcomes () {
-        await _buyAllOutcomes(state.categoricalEvent, gnosis)
+      async buyAllOutcomesExample () {
+        await _buyAllOutcomesExample(state.categoricalEvent, gnosis)
           .catch(_handleError)
       },
 
-      async checkBalances () {
-        await _checkBalances(state.categoricalEvent, gnosis)
+      async checkBalancesExample () {
+        await _checkBalancesExample(state.categoricalEvent, gnosis)
+      },
+
+      async resolveMarketExample () {
+        await _resolveMarketExample(state.categoricalEvent, gnosis)
       }
     }
   })
@@ -85,8 +89,9 @@
     document.getElementById('publishEventExampleBtn').disabled = false
     document.getElementById('createOracleExampleBtn').disabled = (state.ipfsHash === null)
     document.getElementById('createCategoricalEventExampleBtn').disabled = (state.oracle === null)
-    document.getElementById('buyAllOutcomesBtn').disabled = (state.categoricalEvent === null)
-    document.getElementById('checkBalancesBtn').disabled = (state.categoricalEvent === null)    
+    document.getElementById('buyAllOutcomesExampleBtn').disabled = (state.categoricalEvent === null)
+    document.getElementById('checkBalancesExampleBtn').disabled = (state.categoricalEvent === null)    
+    document.getElementById('resolveMarketExampleBtn').disabled = (state.categoricalEvent === null)    
     document.getElementById('clearState').disabled = false    
   }
 
@@ -248,8 +253,8 @@ in: <br />
   }
   
   
-  async function _buyAllOutcomes (event, gnosis) {
-    console.log('buyAllOutcomes: Init')
+  async function _buyAllOutcomesExample (event, gnosis) {
+    console.log('buyAllOutcomesExample: Init')
     const logItems = []
     const depositValue = 0.01e18
     const txResults = await Promise.all([
@@ -282,13 +287,13 @@ the transaction <span class="code">${txResult.tx}</span>.`)
       message: `Example on using <em>buyAllOutcomes</em>.`,
       items: logItems
     })
-    console.log('buyAllOutcomes: All outcomes has been bought', txResults)
+    console.log('buyAllOutcomesExample: All outcomes has been bought', txResults)
   
     return txResults
   } 
 
-  async function _checkBalances(event, gnosis) {
-    console.log('checkBalances: Init')
+  async function _checkBalancesExample(event, gnosis) {
+    console.log('checkBalancesExample: Init')
     const account = gnosis.defaultAccount 
     const { Token } = gnosis.contracts
     const outcomeCount = await event
@@ -315,6 +320,26 @@ ${balance}</span> tokens of <span class="code">${outcomeToken.address}</span>`)
       message: `The balances for account <span class="code">${account}</span> are:`,
       items: logItems
     })
-    console.log('checkBalances: Done!')
+    console.log('checkBalancesExample: Done!')
+  } 
+
+  async function _resolveMarketExample(event, gnosis) {
+    console.log('resolveMarketExample: Init')
+    await gnosis.resolveEvent({
+      event,
+      outcome: 1
+    }).catch(_handleError)
+
+    log({
+      title: 'Resolve market',
+      message: 'Since we are the centralized oracle:',
+      items: [
+        'We resolve the market setting <span class="code">Trump</span> as the new president.'
+      ]
+    })
+
+    console.log('resolveMarketExample: Done!')
   }
+
+
 }())
