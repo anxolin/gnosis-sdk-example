@@ -18,7 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 
-  <link rel="stylesheet" href="main.css?v=1.0">
+  <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
@@ -46,17 +46,19 @@
     </section>
     <section class="content">
         <h1>Actions</h1>
-        <div>
-            <button id="mathExampleBtn" onclick="App.mathExample()" disabled="disable">Use math contract</button>
-            <button id="publishEventExampleBtn" onclick="App.publishEventExample()" disabled="disable">Publish Event</button>
-            <button id="createOracleExampleBtn" onclick="App.createOracleExample()" disabled="disable">Create oracle</button>
-            <button id="createCategoricalEventExampleBtn" onclick="App.createCategoricalEventExample()" disabled="disable">Create categorical event</button>            
-            <button id="buyAllOutcomesBtn" onclick="App.buyAllOutcomes()" disabled="disable">Buy all outcomes</button>
-            <button id="clearState" onclick="App.clearState()" disabled="disable">Clear state</button>
+        <div class="buttons">
+            <button id="mathExampleBtn" onclick="App.mathExample()" disabled="disable" class="btn">Use math contract</button>
+            <button id="publishEventExampleBtn" onclick="App.publishEventExample()" disabled="disable" class="btn">Publish Event</button>
+            <button id="createOracleExampleBtn" onclick="App.createOracleExample()" disabled="disable" class="btn">Create oracle</button>
+            <button id="createCategoricalEventExampleBtn" onclick="App.createCategoricalEventExample()" disabled="disable" class="btn">Create categorical event</button>            
+            <button id="buyAllOutcomesBtn" onclick="App.buyAllOutcomes()" disabled="disable" class="btn">Buy all outcomes</button>
         </div>
-        <div>
-          
+
+        <div class="buttons">
+          <button id="clearState" onclick="App.clearState()" disabled="disable" class="btn secondary">Clear state</button>
+          <button id="showState" onclick="App.showState()" class="btn primary">Show state in console</button>
         </div>
+        
     </section>
     <section class="content">
       <h1>Output:</h1>
@@ -68,6 +70,6 @@
   <footer>
   </footer>
   <script src="vendor/gnosis.js"></script>
-  <script src="main.js?v0"></script>
+  <script src="main.js"></script>
 </body>
 </html>

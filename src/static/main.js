@@ -25,7 +25,8 @@
     await buyAllOutcomes(categoricalEvent, gnosis)
     */
     window.App = {
-      state,      
+      state,
+      showState,
       clearState,
 
       mathExample () {
@@ -81,7 +82,7 @@
     document.getElementById('createOracleExampleBtn').disabled = (state.ipfsHash === null)
     document.getElementById('createCategoricalEventExampleBtn').disabled = (state.oracle === null)
     document.getElementById('buyAllOutcomesBtn').disabled = (state.categoricalEvent === null)
-    document.getElementById('clearState').disabled = false
+    document.getElementById('clearState').disabled = false    
   }
 
   function clearState () {
@@ -90,6 +91,10 @@
       localStorage.removeItem(prop)
     })
     _printState()
+  }
+
+  function showState () {
+    console.log(state)
   }
   
   function _updateState (prop, value) {

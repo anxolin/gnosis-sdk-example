@@ -56,3 +56,47 @@ section.banner {
 #output .code {
   color: yellow
 }
+
+
+.buttons {
+  text-align: right
+}
+
+
+.btn {
+  background-color: #e7e7e7;
+  color: black;
+  display: inline-block;
+  padding: 1rem 1.5rem;
+  margin: 1.9rem 0.3rem;
+  text-align: center;
+  font-size: 1.7rem;
+  cursor: pointer;
+  border: none;
+  width: auto;
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.3);
+}
+
+a.btn {
+  text-decoration: none;
+  font: menu;
+  display: inline-block;
+}
+
+.btn:hover, .btn:focus {
+  color: black;
+  text-shadow: 0 0 20px white;
+  background-color: white;
+}
+
+/* btn style */
+.btn.primary {background-color: #008CBA; color: white;} /* Blue */
+.btn.secondary {background-color: #555555; color: white;} /* Black */
+.btn.success {background-color: #4CAF50; color: white;} /* Green */
+.btn.danger {background-color: #f44336; color: white;} /* Black */
+
+/* btn size */
+.btn.small { font-size: 1.3rem; }
+.btn.big { font-size: 2rem; padding: 1rem 2rem;}
+.btn.huge { font-size: 3rem; padding: 1.3rem 2rem; }
