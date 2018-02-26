@@ -5,18 +5,20 @@
   let numLoggedItems = 0
   
   const state = {
-    ipfsHash: localStorage.getItem('ipfsHash') || null,
+    ipfsHash: null,
     oracle: null,
     oracleAddress: null,
+    categoricalEventAddress: null,
     categoricalEvent: null,
     winninOutcome: null
   }
-
   _printState()  
 
   Gnosis.create().then(async gnosis => {
     console.log('Loaded gnosis', gnosis)
     _enableDisableButtons()
+    await _restoreState(gnosis)
+    _printState()
   
     /*
     await mathExample(gnosis)
@@ -25,7 +27,8 @@
     const categoricalEvent = await createCategoricalEventExample(oracle, gnosis)
     await buyAllOutcomes(categoricalEvent, gnosis)
     */
-    window.App = {
+    window.App = {      
+      gnosis,
       state,
       showState,
       clearState,
@@ -40,14 +43,16 @@
         .catch(_handleError)
 
         _updateState('ipfsHash', ipfsHash)
+        localStorage.setItem('ipfsHash', ipfsHash)
       },
 
       async createOracleExample () {
-        const oracle = await createOracleExample(state.ipfsHash, gnosis)
+        const oracle = await _createOracleExample(state.ipfsHash, gnosis)
           .catch(_handleError)
 
         _updateState('oracle', oracle)
         _updateState('oracleAddress', oracle.address)
+        localStorage.setItem('oracleAddress', oracle.address)
       },
 
       async createCategoricalEventExample () {
@@ -55,6 +60,8 @@
           .catch(_handleError)
 
         _updateState('categoricalEvent', categoricalEvent)
+        _updateState('categoricalEventAddress', categoricalEvent.address)        
+        localStorage.setItem('categoricalEventAddress', categoricalEvent.address)
       },
 
       async buyAllOutcomesExample () {
@@ -69,6 +76,7 @@
       async resolveMarketExample () {
         const winninOutcome = await _resolveMarketExample(state.categoricalEvent, gnosis)
         _updateState('winninOutcome', winninOutcome)
+        localStorage.setItem('winninOutcome', winninOutcome)
       },
 
       async redeemExample () {
@@ -124,7 +132,7 @@
   
   function _updateState (prop, value) {
     const oldValue = state[prop]
-    localStorage.setItem(prop, value) 
+    // localStorage.setItem(prop, value) 
     console.log(`Uodate state "${prop}" from ${oldValue} to ${value}`)
     state[prop] = value
 
@@ -222,7 +230,7 @@
     return ipfsHash
   }
   
-  async function createOracleExample(ipfsHash, gnosis) {
+  async function _createOracleExample(ipfsHash, gnosis) {
     console.log('createCentralizedOracle: Init')
     const oracle = await gnosis.createCentralizedOracle(ipfsHash)
     log({
@@ -393,9 +401,40 @@ ${balance}</span> tokens of <span class="code">${outcomeToken.address}</span>`)
     console.log('getEtherTokenBalance: The balance is %s', balance)
   }
 
-  function _fromWei (bigNumber) {
-    return bigNumber.div(1e18).valueOf()
+  function _fromWei (num) {
+    if (num.div) {
+      return num.div(1e18).valueOf()
+    } else {
+      let parsedNumber = (num instanceof String) ? parseFloat(num) : num
+      return num / 1e18
+    }
   }
 
+  function _restoreState (gnosis) {
+    const recoverProps = [
+      'ipfsHash',
+      'oracleAddress',
+      'categoricalEventAddress',
+      'winninOutcome'
+    ]
+    recoverProps.forEach(prop => {
+      _updateState(prop, localStorage.getItem(prop))
+    })    
+
+    if (state.oracleAddress) {      
+      const oracle = gnosis.contracts
+        .CentralizedOracle
+        .at(state.oracleAddress)
+
+      _updateState('oracle', oracle)
+    }
+
+    if (state.categoricalEventAddress) {      
+      const categoricalEvent = gnosis.contracts
+        .CategoricalEvent
+        .at(state.categoricalEventAddress)
+      _updateState('categoricalEvent', categoricalEvent)
+    }
+  }
 
 }())
