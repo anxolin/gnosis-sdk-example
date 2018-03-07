@@ -279,10 +279,10 @@ in: <br />
     const logItems = []
     const depositValue = 0.1e18
     const txResults = await Promise.all([
-        gnosis.etherToken.deposit({ value: depositValue }),
-        gnosis.etherToken.approve(event.address, depositValue),
-        event.buyAllOutcomes(depositValue),
-    ])
+      [gnosis.etherToken.constructor, await gnosis.etherToken.deposit.sendTransaction({ value: depositValue })],
+      [gnosis.etherToken.constructor, await gnosis.etherToken.approve.sendTransaction(event.address, depositValue)],
+      [event.constructor, await event.buyAllOutcomes.sendTransaction(depositValue)],
+    ].map(([contract, txHash]) => contract.syncTransaction(txHash)))
     logItems.push(`Deposited <span class="code">${_fromWei(depositValue)}</span> EtherToken`)
     logItems.push(`Approve the event contract <span class="code">${event.address} 
     </span> to use <span class="code">${_fromWei(depositValue)}</span> EtherToken`)
@@ -291,9 +291,9 @@ in: <br />
   
     // Make sure everything worked
     const expectedEvents = [
-        'Deposit',
-        'Approval',
-        'OutcomeTokenSetIssuance',
+      'Deposit',
+      'Approval',
+      'OutcomeTokenSetIssuance',
     ]
     txResults.forEach((txResult, i) => {
       const event = expectedEvents[i]
